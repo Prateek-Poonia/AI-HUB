@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grammar Checker - A&P</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/ai hub photo.png') }}" alt="Logo">
+      <span>A&P</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/summarizer">Summarizer</a></li>
+      <li><a href="/chatbot">Chatbot</a></li>
+      <li><a href="/handwriting">Handwriting</a></li>
+      <li><a href="/resume">Resume Analyzer</a></li>
+      <li><a href="/grammar">Grammar Checker</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button id="darkModeToggle">🌙</button>
+      <a href="/getstarted" class="get-started-btn">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container">
+    <div class="tool-container">
+
+      <h1>✏️ Grammar Checker</h1>
+      <p class="tool-description">
+        Paste your text and let AI correct grammar, spelling, and punctuation.
+      </p>
+
+      <!-- Form -->
+      <form action="/grammar" method="post" class="grammar-form">
+        <div class="form-group">
+          <label>Enter Your Text:</label>
+          <textarea id="input-text" name="text" rows="8"
+            placeholder="Paste your text here..." required></textarea>
+
+          <span id="charCount">0 / 5000 characters</span>
+        </div>
+
+        <button type="submit" class="submit-btn">Check Grammar</button>
+      </form>
+
+      <!-- Output -->
+      {% if result or error %}
+      <div class="output grammar-output">
+
+        <h2>✅ Result</h2>
+
+        <!-- Error Case -->
+        {% if error %}
+          <div class="error-message">
+            <p><strong>⚠️ Error:</strong> {{ error }}</p>
+          </div>
+
+        <!-- Success Case -->
+        {% else %}
+
+          <div class="comparison-section">
+
+            <!-- Original -->
+            <div class="original-text">
+              <h3>📝 Original</h3>
+              <p class="text-box original">
+                {{ request.form.get('text', '') }}
+              </p>
+            </div>
+
+            <!-- Corrected -->
+            <div class="corrected-text">
+              <h3>✨ Corrected</h3>
+              <p class="text-box corrected">{{ result }}</p>
+
+              <button onclick="copyText()" class="copy-btn">
+                📋 Copy
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Stats -->
+          <div class="stats">
+            <p><b>Original Length:</b> <span id="origLen">0</span></p>
+            <p><b>Corrected Length:</b> <span id="corrLen">0</span></p>
+            <p><b>Original Words:</b> <span id="origWords">0</span></p>
+            <p><b>Corrected Words:</b> <span id="corrWords">0</span></p>
+          </div>
+
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <a href="/" class="back-btn">← Back to Home</a>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 A&P - AI Tools</p>
+  </footer>
+
+  <!-- JS -->
+  <script>
+
+    // Character counter
+    const input = document.getElementById("input-text");
+    const counter = document.getElementById("charCount");
+
+    if (input) {
+      input.addEventListener("input", () => {
+        let len = input.value.length;
+        counter.innerText = len + " / 5000 characters";
+
+        if (len > 5000) {
+          input.value = input.value.substring(0, 5000);
+        }
+      });
+    }
+
+    // Copy function
+    function copyText() {
+      let text = document.querySelector(".corrected").innerText;
+      navigator.clipboard.writeText(text);
+      alert("Copied!");
+    }
+
+    // Stats calculation
+    window.onload = () => {
+      let orig = document.querySelector(".original");
+      let corr = document.querySelector(".corrected");
+
+      if (orig && corr) {
+        let oText = orig.innerText;
+        let cText = corr.innerText;
+
+        document.getElementById("origLen").innerText = oText.length;
+        document.getElementById("corrLen").innerText = cText.length;
+
+        document.getElementById("origWords").innerText =
+          oText.trim().split(/\s+/).length;
+
+        document.getElementById("corrWords").innerText =
+          cText.trim().split(/\s+/).length;
+      }
+    };
+
+    // Dark mode
+    const toggle = document.getElementById("darkModeToggle");
+
+    if (localStorage.getItem("darkMode")) {
+      document.body.classList.add("dark-mode");
+      toggle.innerText = "☀️";
+    }
+
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+
+      if (document.body.classList.contains("dark-mode")) {
+        localStorage.setItem("darkMode", "on");
+        toggle.innerText = "☀️";
+      } else {
+        localStorage.removeItem("darkMode");
+        toggle.innerText = "🌙";
+      }
+    });
+
+  </script>
+
+</body>
+</html>

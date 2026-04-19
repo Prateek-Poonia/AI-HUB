@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI HUB - AI Tools</title>
+
+  <!-- Main external CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <!-- Inline CSS only for background (Flask URL resolution works here) -->
+  <style>
+    body {
+      background: url("{{ url_for('static', filename='images/background.jpg') }}") no-repeat center center fixed;
+      background-size: cover;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 🌐 Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/ai hub photo.png') }}" alt="AI HUB Logo">
+      <span>AI HUB</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/summarizer">Summarizer</a></li>
+      <li><a href="/chatbot">Chatbot</a></li>
+      <li><a href="/handwriting">Handwriting</a></li>
+      <li><a href="/resume">Resume Analyzer</a></li>
+      <li><a href="/grammar">Grammar Checker</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button id="darkModeToggle">🌙</button>
+      <a href="/getstarted" class="get-started-btn">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- 🏠 Intro Section -->
+  <header class="intro-section">
+    <h1>Welcome to <strong>AI HUB</strong></h1>
+    <p class="tagline">Empowering Documents with AI — Smart Summaries, Instant Q&A, and More</p>
+  </header>
+
+  <!-- 📄 Tool 1 -->
+  <section class="tool-block">
+    <div class="tool-card">
+      <img src="{{ url_for('static', filename='images/summarizer.png') }}" alt="PDF Summarizer">
+      <h2>PDF Summarizer</h2>
+      <a href="/summarizer" class="tool-link">Try Now →</a>
+    </div>
+  </section>
+
+  <!-- 🤖 Tool 2 -->
+  <section class="tool-block">
+    <div class="tool-card">
+      <img src="{{ url_for('static', filename='images/pdfchatbot.png') }}" alt="PDF Chatbot">
+      <h2>PDF Chatbot Q&A</h2>
+      <a href="/chatbot" class="tool-link">Try Now →</a>
+    </div>
+  </section>
+
+  <!-- ✍️ Tool 3 -->
+  <section class="tool-block">
+    <div class="tool-card">
+      <img src="{{ url_for('static', filename='images/handwriting.png') }}" alt="Handwriting to Text">
+      <h2>Handwritten Text Converter</h2>
+      <a href="/handwriting" class="tool-link">Try Now →</a>
+    </div>
+  </section>
+
+  <!-- � Tool 4 -->
+  <section class="tool-block">
+    <div class="tool-card">
+      <img src="{{ url_for('static', filename='images/resume analyzer.jpg') }}" alt="Resume Analyzer">
+      <h2>Resume Analyzer</h2>
+      <a href="/resume" class="tool-link">Try Now →</a>
+    </div>
+  </section>
+
+  <!-- ✏️ Tool 5 -->
+  <section class="tool-block">
+    <div class="tool-card">
+      <img src="{{ url_for('static', filename='images/grammer.jpg') }}" alt="Grammar Checker">
+      <h2>Grammar Checker</h2>
+      <a href="/grammar" class="tool-link">Try Now →</a>
+    </div>
+  </section>
+
+  <!-- �📞 Footer -->
+  <footer>
+    <h2>Contact Us</h2>
+    <div class="contact-info">
+      <div>
+        <strong>Prateek Poonia</strong><br>
+        📧 prateekpoonia04@gmail.com<br>
+        📞 7737491794
+      </div>
+      
+    </div>
+    <p>&copy; 2025 AI HUB. All rights reserved.</p>
+  </footer>
+
+  <!-- 🌙 Dark Mode Script -->
+  <script>
+    const toggle = document.getElementById("darkModeToggle");
+    const body = document.body;
+
+    if (localStorage.getItem("darkMode") === "enabled") {
+      body.classList.add("dark-mode");
+      toggle.textContent = "☀️";
+    }
+
+    toggle.addEventListener("click", () => {
+      body.classList.toggle("dark-mode");
+      const darkEnabled = body.classList.contains("dark-mode");
+      localStorage.setItem("darkMode", darkEnabled ? "enabled" : "disabled");
+      toggle.textContent = darkEnabled ? "☀️" : "🌙";
+    });
+  </script>
+
+</body>
+</html>

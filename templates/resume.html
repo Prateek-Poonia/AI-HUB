@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Analyzer - A&P</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/ai hub photo.png') }}" alt="A&P Logo">
+      <span>A&P</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/summarizer">Summarizer</a></li>
+      <li><a href="/chatbot">Chatbot</a></li>
+      <li><a href="/handwriting">Handwriting</a></li>
+      <li><a href="/resume">Resume Analyzer</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button id="darkModeToggle">🌙</button>
+      <a href="/getstarted" class="get-started-btn">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container">
+    <div class="tool-container">
+      <h1>💼 Resume Analyzer</h1>
+      <p class="tool-description">Upload your resume to analyze your skills, predicted job roles, and professional strengths.</p>
+      
+      <form action="/resume" method="post" enctype="multipart/form-data" class="resume-form">
+        <div class="form-group">
+          <label for="resume-file">Upload PDF Resume:</label>
+          <input type="file" id="resume-file" name="pdf" accept=".pdf" required>
+          <span class="file-hint">Supported format: PDF</span>
+        </div>
+        <button type="submit" class="submit-btn">Analyze Resume</button>
+      </form>
+
+      {% if result %}
+        <div class="output resume-output">
+          <h2>📊 Analysis Results</h2>
+          
+          <!-- Predicted Jobs -->
+          <div class="result-section">
+            <h3>🎯 Predicted Job Roles</h3>
+            {% if result.predicted_role %}
+              <div class="predicted-roles">
+                {% for role, score in result.predicted_role.items() %}
+                  <div class="role-badge">
+                    <span class="role-name">{{ role }}</span>
+                    <span class="role-score">{{ "%.2f"|format(score * 100) }}%</span>
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p class="no-data">Unable to predict job roles. Please upload a valid resume.</p>
+            {% endif %}
+          </div>
+
+          <!-- Skills Extracted -->
+          <div class="result-section">
+            <h3>💡 Skills Detected</h3>
+            {% if result.skills %}
+              <div class="skills-container">
+                {% for skill in result.skills %}
+                  <span class="skill-tag">{{ skill }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p class="no-data">No recognized skills found in the resume.</p>
+            {% endif %}
+          </div>
+
+          <!-- Error Handling -->
+          {% if result.get('error') %}
+            <div class="error-message">
+              <p><strong>Error:</strong> {{ result.error }}</p>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <a href="/" class="back-btn">← Back to Home</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 A&P - AI Tools. All rights reserved.</p>
+  </footer>
+
+  <!-- Dark Mode Script -->
+  <script>
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    // Check for saved mode preference
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      body.classList.add('dark-mode');
+      darkModeToggle.textContent = '☀️';
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('darkMode', 'enabled');
+        darkModeToggle.textContent = '☀️';
+      } else {
+        localStorage.removeItem('darkMode');
+        darkModeToggle.textContent = '🌙';
+      }
+    });
+  </script>
+</body>
+</html>

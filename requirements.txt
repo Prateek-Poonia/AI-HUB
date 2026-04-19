@@ -1,0 +1,11 @@
+Flask
+transformers
+torch
+PyMuPDF
+Pillow
+scikit-learn
+flask==3.0.3
+transformers==4.44.2
+torch>=2.1
+sentencepiece==0.2.0
+uvicorn==0.30.1  # optional, for ASGI if you prefer

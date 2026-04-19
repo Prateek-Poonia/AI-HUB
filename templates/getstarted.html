@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Started - A&P</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="A&P Logo">
+      <span>A&P</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/getstarted" class="get-started-btn">Get Started</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button id="darkModeToggle">🌙</button>
+    </div>
+  </nav>
+
+  <section class="auth-container">
+    <div class="auth-left">
+      <h2>Welcome to A&P</h2>
+      <p>Start your AI-powered journey with us. Join or log in to explore smart tools that automate document work.</p>
+      <div class="contact-box">
+        <p><strong>📧 Prateek Poonia:</strong> prateekpoonia04@gmail.com</p>
+        <p><strong>📧 Ashish Kumar:</strong> ashsihjat593@gmail.com</p>
+      </div>
+    </div>
+
+    <div class="auth-right">
+      <form class="auth-form" action="/login" method="post">
+        <h3>Login</h3>
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+
+      <form class="auth-form" action="/signup" method="post">
+        <h3>Sign Up</h3>
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 A&P. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      body.classList.add('dark-mode');
+    }
+    toggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
+    });
+  </script>
+</body>
+</html>
