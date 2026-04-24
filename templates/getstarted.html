@@ -1,68 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Get Started - A&P</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Started - AI HUB</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <nav class="navbar">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
     <div class="nav-logo">
-      <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="A&P Logo">
-      <span>A&P</span>
+      <img src="{{ url_for('static', filename='images/ai hub photo.png') }}" alt="AI HUB Logo">
+      <span>AI HUB</span>
     </div>
-    <ul class="nav-links">
+
+    <ul class="nav-links" id="navLinks">
       <li><a href="/">Home</a></li>
-      <li><a href="/getstarted" class="get-started-btn">Get Started</a></li>
+      <li><a href="/summarizer">Summarizer</a></li>
+      <li><a href="/chatbot">Chatbot</a></li>
+      <li><a href="/handwriting">Handwriting</a></li>
+      <li><a href="/resume">Resume</a></li>
+      <li><a href="/grammar">Grammar</a></li>
     </ul>
+
     <div class="nav-actions">
-      <button id="darkModeToggle">🌙</button>
+      <button id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
+      <a href="/getstarted" class="get-started-btn active">Get Started</a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
     </div>
   </nav>
 
-  <section class="auth-container">
-    <div class="auth-left">
-      <h2>Welcome to A&P</h2>
-      <p>Start your AI-powered journey with us. Join or log in to explore smart tools that automate document work.</p>
-      <div class="contact-box">
-        <p><strong>📧 Prateek Poonia:</strong> prateekpoonia04@gmail.com</p>
-        <p><strong>📧 Ashish Kumar:</strong> ashsihjat593@gmail.com</p>
+  <!-- Hero Section -->
+  <section class="hero" style="min-height: calc(100vh - 80px); padding-top: 100px;">
+    <div class="hero-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        AI-Powered Productivity
       </div>
-    </div>
-
-    <div class="auth-right">
-      <form class="auth-form" action="/login" method="post">
-        <h3>Login</h3>
-        <input type="text" name="username" placeholder="Username" required />
-        <input type="password" name="password" placeholder="Password" required />
-        <button type="submit">Login</button>
-      </form>
-
-      <form class="auth-form" action="/signup" method="post">
-        <h3>Sign Up</h3>
-        <input type="text" name="username" placeholder="Username" required />
-        <input type="email" name="email" placeholder="Email" required />
-        <input type="password" name="password" placeholder="Password" required />
-        <button type="submit">Sign Up</button>
-      </form>
+      <h1 class="hero-title">
+        Get Started with <span class="gradient-text">AI HUB</span>
+      </h1>
+      <p class="hero-subtitle">
+        Join thousands of professionals using AI to transform their workflow. 
+        Sign up now to unlock all features and start automating your document work.
+      </p>
     </div>
   </section>
 
-  <footer>
-    <p>&copy; 2025 A&P. All rights reserved.</p>
-  </footer>
+  <!-- Auth Section -->
+  <section class="auth-section">
+    <div class="auth-container">
+      
+      <!-- Left Side - Welcome -->
+      <div class="auth-card welcome-card">
+        <div class="card-icon">🚀</div>
+        <h2>Welcome to AI HUB</h2>
+        <p>Start your AI-powered journey with us. Join or log in to explore smart tools that automate document work.</p>
+        
+        <div class="contact-info">
+          <h3>Contact Us</h3>
+          <div class="contact-item">
+            <span class="contact-icon">📧</span>
+            <span><strong>Prateek Poonia:</strong> prateekpoonia04@gmail.com</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">📧</span>
+            <span><strong>Ashish Kumar:</strong> ashsihjat593@gmail.com</span>
+          </div>
+        </div>
 
+        <div class="features-list">
+          <h3>Why Join Us?</h3>
+          <ul>
+            <li>✅ Free to get started</li>
+            <li>✅ 5 Powerful AI Tools</li>
+            <li>✅ Secure document processing</li>
+            <li>✅ Regular updates & improvements</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right Side - Forms -->
+      <div class="auth-forms">
+        
+        <!-- Login Form -->
+        <form class="auth-form-card" action="/login" method="post">
+          <div class="form-header">
+            <h3>Welcome Back</h3>
+            <p>Sign in to continue to AI HUB</p>
+          </div>
+          
+          <div class="form-group">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" name="username" placeholder="Enter your username" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+          </div>
+          
+          <button type="submit" class="submit-btn" style="width: 100%;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+              <polyline points="10 17 15 12 10 7"></polyline>
+              <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+            Login
+          </button>
+        </form>
+
+        <!-- Signup Form -->
+        <form class="auth-form-card signup-card" action="/signup" method="post">
+          <div class="form-header">
+            <h3>Create Account</h3>
+            <p>Join AI HUB today - it's free!</p>
+          </div>
+          
+          <div class="form-group">
+            <label for="signup-username">Username</label>
+            <input type="text" id="signup-username" name="username" placeholder="Choose a username" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="signup-email">Email</label>
+            <input type="email" id="signup-email" name="email" placeholder="Enter your email" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" name="password" placeholder="Create a password" required>
+          </div>
+          
+          <button type="submit" class="submit-btn" style="width: 100%;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7" r="4"></circle>
+              <line x1="20" y1="8" x2="20" y2="14"></line>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+            Sign Up
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- JavaScript -->
   <script>
-    const toggle = document.getElementById('darkModeToggle');
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    const darkModeToggle = document.getElementById('darkModeToggle');
     const body = document.body;
+
     if (localStorage.getItem('darkMode') === 'enabled') {
       body.classList.add('dark-mode');
+      darkModeToggle.textContent = '☀️';
     }
-    toggle.addEventListener('click', () => {
+
+    darkModeToggle.addEventListener('click', () => {
       body.classList.toggle('dark-mode');
-      localStorage.setItem('darkMode', body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
+      const isDark = body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+      darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+    });
+
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('mobile-open');
     });
   </script>
+
 </body>
 </html>

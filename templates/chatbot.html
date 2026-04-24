@@ -2,26 +2,133 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>PDF Chatbot - A&P</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Chatbot - AI HUB</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="container">
-    <h1>🤖 PDF Chatbot</h1>
-    <form action="/chatbot" method="post" enctype="multipart/form-data">
-      <input type="file" name="pdf" accept=".pdf" required>
-      <input type="text" name="question" placeholder="Enter your question..." required>
-      <button type="submit">Ask</button>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/ai hub photo.png') }}" alt="AI HUB Logo">
+      <span>AI HUB</span>
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/summarizer">Summarizer</a></li>
+      <li><a href="/chatbot" class="active">Chatbot</a></li>
+      <li><a href="/handwriting">Handwriting</a></li>
+      <li><a href="/resume">Resume</a></li>
+      <li><a href="/grammar">Grammar</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
+      <a href="/getstarted" class="get-started-btn">Get Started</a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="page-container">
+    <div class="page-header">
+      <h1>PDF Chatbot Q&A</h1>
+      <p>Ask questions about your PDF and get instant, accurate answers</p>
+    </div>
+
+    <form class="tool-form" action="/chatbot" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="pdf">Upload PDF Document</label>
+        <div class="file-upload">
+          <input type="file" id="pdf" name="pdf" accept=".pdf" required>
+          <div class="file-upload-icon">📄</div>
+          <p>Drag & drop your PDF here or click to browse</p>
+          <p class="file-hint">Supported format: .pdf</p>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="question">Your Question</label>
+        <input type="text" id="question" name="question" placeholder="What would you like to know about this document?" required>
+      </div>
+      
+      <button type="submit" class="submit-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        Ask Question
+      </button>
     </form>
 
     {% if answer %}
       <div class="output">
-        <h2>Answer:</h2>
+        <h2>💬 Answer</h2>
         <p>{{ answer }}</p>
       </div>
     {% endif %}
 
-    <a href="/" class="back">← Back to Home</a>
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="/" class="btn-secondary" style="display: inline-flex;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Home
+      </a>
+    </div>
   </div>
+
+  <!-- JavaScript -->
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      body.classList.add('dark-mode');
+      darkModeToggle.textContent = '☀️';
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      const isDark = body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+      darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+    });
+
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('mobile-open');
+    });
+
+    const fileInput = document.querySelector('.file-upload input');
+    const fileUploadText = document.querySelector('.file-upload p');
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        fileUploadText.textContent = 'Selected: ' + this.files[0].name;
+        fileUploadText.style.color = 'var(--primary)';
+      }
+    });
+  </script>
+
 </body>
 </html>

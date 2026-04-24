@@ -2,25 +2,141 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>PDF Summarizer - A&P</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Summarizer - AI HUB</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="container">
-    <h1>📄 PDF Summarizer</h1>
-    <form action="/summarizer" method="post" enctype="multipart/form-data">
-      <input type="file" name="pdf" accept=".pdf" required>
-      <button type="submit">Summarize</button>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/ai hub photo.png') }}" alt="AI HUB Logo">
+      <span>AI HUB</span>
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/summarizer" class="active">Summarizer</a></li>
+      <li><a href="/chatbot">Chatbot</a></li>
+      <li><a href="/handwriting">Handwriting</a></li>
+      <li><a href="/resume">Resume</a></li>
+      <li><a href="/grammar">Grammar</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
+      <a href="/getstarted" class="get-started-btn">Get Started</a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="page-container">
+    <div class="page-header">
+      <h1>PDF Summarizer</h1>
+      <p>Upload any PDF document and get an intelligent summary in seconds</p>
+    </div>
+
+    <form class="tool-form" action="/summarizer" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="pdf">Upload PDF Document</label>
+        <div class="file-upload">
+          <input type="file" id="pdf" name="pdf" accept=".pdf" required>
+          <div class="file-upload-icon">📄</div>
+          <p>Drag & drop your PDF here or click to browse</p>
+          <p class="file-hint">Supported format: .pdf</p>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        Generate Summary
+      </button>
     </form>
 
     {% if summary %}
       <div class="output">
-        <h2>Summary:</h2>
+        <h2>📋 Summary</h2>
         <p>{{ summary }}</p>
       </div>
     {% endif %}
 
-    <a href="/" class="back">← Back to Home</a>
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="/" class="btn-secondary" style="display: inline-flex;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Home
+      </a>
+    </div>
   </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      body.classList.add('dark-mode');
+      darkModeToggle.textContent = '☀️';
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      const isDark = body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+      darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+    });
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('mobile-open');
+    });
+
+    // File upload visual feedback
+    const fileInput = document.querySelector('.file-upload input');
+    const fileUploadText = document.querySelector('.file-upload p');
+    
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        fileUploadText.textContent = 'Selected: ' + this.files[0].name;
+        fileUploadText.style.color = 'var(--primary)';
+      }
+    });
+  </script>
+
 </body>
 </html>

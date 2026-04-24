@@ -3,91 +3,93 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grammar Checker - A&P</title>
+  <title>Grammar Checker - AI HUB</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar">
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
     <div class="nav-logo">
-      <img src="{{ url_for('static', filename='images/ai hub photo.png') }}" alt="Logo">
-      <span>A&P</span>
+      <img src="{{ url_for('static', filename='images/ai hub photo.png') }}" alt="AI HUB Logo">
+      <span>AI HUB</span>
     </div>
 
-    <ul class="nav-links">
+    <ul class="nav-links" id="navLinks">
       <li><a href="/">Home</a></li>
       <li><a href="/summarizer">Summarizer</a></li>
       <li><a href="/chatbot">Chatbot</a></li>
       <li><a href="/handwriting">Handwriting</a></li>
-      <li><a href="/resume">Resume Analyzer</a></li>
-      <li><a href="/grammar">Grammar Checker</a></li>
+      <li><a href="/resume">Resume</a></li>
+      <li><a href="/grammar" class="active">Grammar</a></li>
     </ul>
 
     <div class="nav-actions">
-      <button id="darkModeToggle">🌙</button>
+      <button id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
       <a href="/getstarted" class="get-started-btn">Get Started</a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
     </div>
   </nav>
 
-  <!-- Main Container -->
-  <div class="container">
-    <div class="tool-container">
+  <!-- Page Content -->
+  <div class="page-container">
+    <div class="page-header">
+      <h1>Grammar Checker</h1>
+      <p>AI-powered grammar, spelling, and punctuation correction</p>
+    </div>
 
-      <h1>✏️ Grammar Checker</h1>
-      <p class="tool-description">
-        Paste your text and let AI correct grammar, spelling, and punctuation.
-      </p>
+    <form class="tool-form" action="/grammar" method="post">
+      <div class="form-group">
+        <label for="input-text">Enter Your Text</label>
+        <textarea id="input-text" name="text" rows="8" placeholder="Paste your text here for grammar checking..." required></textarea>
+        <span id="charCount">0 / 5000 characters</span>
+      </div>
+      
+      <button type="submit" class="submit-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+        Check Grammar
+      </button>
+    </form>
 
-      <!-- Form -->
-      <form action="/grammar" method="post" class="grammar-form">
-        <div class="form-group">
-          <label>Enter Your Text:</label>
-          <textarea id="input-text" name="text" rows="8"
-            placeholder="Paste your text here..." required></textarea>
-
-          <span id="charCount">0 / 5000 characters</span>
-        </div>
-
-        <button type="submit" class="submit-btn">Check Grammar</button>
-      </form>
-
-      <!-- Output -->
-      {% if result or error %}
+    {% if result or error %}
       <div class="output grammar-output">
-
         <h2>✅ Result</h2>
 
-        <!-- Error Case -->
         {% if error %}
           <div class="error-message">
             <p><strong>⚠️ Error:</strong> {{ error }}</p>
           </div>
-
-        <!-- Success Case -->
         {% else %}
-
           <div class="comparison-section">
-
             <!-- Original -->
             <div class="original-text">
               <h3>📝 Original</h3>
-              <p class="text-box original">
-                {{ request.form.get('text', '') }}
-              </p>
+              <p class="text-box original">{{ request.form.get('text', '') }}</p>
             </div>
 
             <!-- Corrected -->
             <div class="corrected-text">
               <h3>✨ Corrected</h3>
               <p class="text-box corrected">{{ result }}</p>
-
-              <button onclick="copyText()" class="copy-btn">
-                📋 Copy
-              </button>
+              <button onclick="copyText()" class="copy-btn">📋 Copy</button>
             </div>
-
           </div>
 
           <!-- Stats -->
@@ -97,23 +99,48 @@
             <p><b>Original Words:</b> <span id="origWords">0</span></p>
             <p><b>Corrected Words:</b> <span id="corrWords">0</span></p>
           </div>
-
         {% endif %}
       </div>
-      {% endif %}
+    {% endif %}
 
-      <a href="/" class="back-btn">← Back to Home</a>
-
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="/" class="btn-secondary" style="display: inline-flex;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Home
+      </a>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2026 A&P - AI Tools</p>
-  </footer>
-
-  <!-- JS -->
+  <!-- JavaScript -->
   <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      body.classList.add('dark-mode');
+      darkModeToggle.textContent = '☀️';
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      const isDark = body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+      darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+    });
+
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('mobile-open');
+    });
 
     // Character counter
     const input = document.getElementById("input-text");
@@ -123,7 +150,6 @@
       input.addEventListener("input", () => {
         let len = input.value.length;
         counter.innerText = len + " / 5000 characters";
-
         if (len > 5000) {
           input.value = input.value.substring(0, 5000);
         }
@@ -148,35 +174,10 @@
 
         document.getElementById("origLen").innerText = oText.length;
         document.getElementById("corrLen").innerText = cText.length;
-
-        document.getElementById("origWords").innerText =
-          oText.trim().split(/\s+/).length;
-
-        document.getElementById("corrWords").innerText =
-          cText.trim().split(/\s+/).length;
+        document.getElementById("origWords").innerText = oText.trim().split(/\s+/).length;
+        document.getElementById("corrWords").innerText = cText.trim().split(/\s+/).length;
       }
     };
-
-    // Dark mode
-    const toggle = document.getElementById("darkModeToggle");
-
-    if (localStorage.getItem("darkMode")) {
-      document.body.classList.add("dark-mode");
-      toggle.innerText = "☀️";
-    }
-
-    toggle.addEventListener("click", () => {
-      document.body.classList.toggle("dark-mode");
-
-      if (document.body.classList.contains("dark-mode")) {
-        localStorage.setItem("darkMode", "on");
-        toggle.innerText = "☀️";
-      } else {
-        localStorage.removeItem("darkMode");
-        toggle.innerText = "🌙";
-      }
-    });
-
   </script>
 
 </body>

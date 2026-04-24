@@ -2,27 +2,128 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Handwriting to Text - A&P</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Handwriting to Text - AI HUB</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
 <body>
-  <div class="container">
-    <h1>✍️ Handwriting to Text</h1>
-    <form action="/handwriting" method="post" enctype="multipart/form-data">
-      <input type="file" name="image" accept="image/*" required>
-      <button type="submit">Convert</button>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <img src="{{ url_for('static', filename='images/ai hub photo.png') }}" alt="AI HUB Logo">
+      <span>AI HUB</span>
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/summarizer">Summarizer</a></li>
+      <li><a href="/chatbot">Chatbot</a></li>
+      <li><a href="/handwriting" class="active">Handwriting</a></li>
+      <li><a href="/resume">Resume</a></li>
+      <li><a href="/grammar">Grammar</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button id="darkModeToggle" aria-label="Toggle dark mode">🌙</button>
+      <a href="/getstarted" class="get-started-btn">Get Started</a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="page-container">
+    <div class="page-header">
+      <h1>Handwriting Converter</h1>
+      <p>Transform handwritten notes into editable digital text</p>
+    </div>
+
+    <form class="tool-form" action="/handwriting" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="image">Upload Handwritten Image</label>
+        <div class="file-upload">
+          <input type="file" id="image" name="image" accept="image/*" required>
+          <div class="file-upload-icon">✍️</div>
+          <p>Drag & drop your image here or click to browse</p>
+          <p class="file-hint">Supported formats: .jpg, .jpeg, .png</p>
+        </div>
+      </div>
+      
+      <button type="submit" class="submit-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+          <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+        </svg>
+        Convert to Text
+      </button>
     </form>
 
     {% if result %}
       <div class="output">
-        <h2>Recognized Text:</h2>
+        <h2>📝 Recognized Text</h2>
         <p>{{ result }}</p>
       </div>
     {% endif %}
 
-    <a href="/" class="back">← Back to Home</a>
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="/" class="btn-secondary" style="display: inline-flex;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Home
+      </a>
+    </div>
   </div>
+
+  <!-- JavaScript -->
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      body.classList.add('dark-mode');
+      darkModeToggle.textContent = '☀️';
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      const isDark = body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+      darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+    });
+
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('mobile-open');
+    });
+
+    const fileInput = document.querySelector('.file-upload input');
+    const fileUploadText = document.querySelector('.file-upload p');
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        fileUploadText.textContent = 'Selected: ' + this.files[0].name;
+        fileUploadText.style.color = 'var(--primary)';
+      }
+    });
+  </script>
+
 </body>
 </html>
